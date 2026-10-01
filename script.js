@@ -1,75 +1,104 @@
-// step 1 getting by reference
+let add = document.getElementById("add");
+let list = document.querySelector(".list")
 
-const button = document.getElementById("btn");
-const type = document.querySelector(".type");
 
-// click event
+// step 1
 
+// add.addEventListener("click", (text = "") => {
 const display = (text = "") => {
-  const div = document.createElement("div");
-  div.classList.add("go");
+  let div = document.createElement("div"); 
+  div.classList.add("btn-box");
+  div.innerHTML = `
+    <div class="btn-end">
+<button id="btn1">📝</button>
+<button id="btn2">❌</button>
+</div> 
+<div>
+    <textarea id="taskTextarea" ${text ? "" : "readonly"}></textarea> 
+</div>
+  `
   
-  // Yahan se div.main aur hide class hata di taaki dabba hamesha dikhe
-  div.innerHTML = `<div class="parent">
-      <button class="del">Del</button>
-      <button class="save">${text ? "edit" : "save"}</button>
-      <textarea ${text ? "readonly" : ""}></textarea>
-      </div>`;
-  
-  type.appendChild(div);
-  
-  // getting by reference
-  
-  const del = div.querySelector(".del");
-  const save = div.querySelector(".save");
-  const textarea = div.querySelector("textarea");
-  
-  textarea.value = text;
-  
-  // Save / Edit toggle function
-  save.addEventListener("click", () => {
-    if (textarea.hasAttribute("readonly")) {
-      textarea.removeAttribute("readonly");
-      save.textContent = "save";
-    } else {
-      textarea.setAttribute("readonly", true);
-      save.textContent = "edit";
-    }
-    autoSave();
-  });
-  
-  // del button delete Function
-  
-  del.addEventListener("click", () => {
-    div.remove();
-    autoSave();
-  });
-  
-  const autoSave = () => {
-    let note = [];
-    const alltexteara = document.querySelectorAll("textarea");
-    
-    alltexteara.forEach((notes) => {
-      note.push(notes.value);
-    });
-    localStorage.setItem("saving", JSON.stringify(note));
-  };
-  
-  textarea.addEventListener("input", () => {
-    autoSave();
-  });
-};
-
-const getvalue = JSON.parse(localStorage.getItem("saving"));
-
-if (getvalue) {
-  getvalue.forEach((values) => {
-    display(values);
-  });
+  let taskTextarea = div.querySelector("textarea");
+taskTextarea.value = text;
+if(taskTextarea.value === "[object PointerEvent]"){
+  taskTextarea.value = "";
 }
 
-// btn addEventListener
+list.prepend(div);
+  
+  div.querySelector("#btn2").addEventListener("click", () => {
+    let check = confirm("Are you sure you want to permanently delete this note?");
+    if(check){
+    div.remove();
+    autoSave()
+    }
+  })
+  
+  
+//   // step 2
+  
+  let btn1 = div.querySelector("#btn1");
+  
+  btn1.addEventListener("click", () => {
+    if(taskTextarea.hasAttribute("readonly")){
+      taskTextarea.removeAttribute("readonly");
+    } else {
+      taskTextarea.setAttribute("readonly", true);
+    }
+    
+  })
+  
+  // list.prepend(div);
 
-button.addEventListener("click", () => {
-  display();
-});
+
+
+
+
+
+// step 3
+
+
+
+const autoSave = () => {
+  let Empathy = [];
+  let allData = document.querySelectorAll("textarea");
+  allData.forEach((curl) => {
+    if(curl.value == "") return;
+      Empathy.push(curl.value);
+    
+    
+  })
+  localStorage.setItem("empathy", JSON.stringify(Empathy));
+}
+
+
+taskTextarea.addEventListener("input", () => {
+  autoSave();
+})
+
+}
+
+
+
+
+
+let data = JSON.parse(localStorage.getItem("empathy"));
+if(data){
+  data.forEach((curl) => {
+    display(curl);
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+add.addEventListener("click", display)
