@@ -10,8 +10,8 @@ const display = (text = "") => {
   div.classList.add("btn-box");
   div.innerHTML = `
     <div class="btn-end">
-<button id="btn1">📝</button>
-<button id="btn2">❌</button>
+<button id="btn1"><i class="fa-solid fa-bookmark"></i></button>
+<button id="btn2"><i class="fa-solid fa-trash"></i></button>
 </div> 
 <div>
     <textarea id="taskTextarea" ${text ? "" : "readonly"}></textarea> 
